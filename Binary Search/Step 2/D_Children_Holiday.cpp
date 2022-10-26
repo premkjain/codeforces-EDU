@@ -26,16 +26,61 @@ typedef long double lld;
 #define all(x)  (x).begin(), (x).end()
 
 
-void solve()
-{
+int m,n;
+vector<ll> ti(1001),z(1001),y(1001);
+bool possible(ll T){
+    ll curr=m;
     
+    for (int i = 0; i < n; ++i)
+    {
+        curr-=T / (ti[i]*z[i] + y[i] ) * z[i] + min(T % (ti[i]*z[i] + y[i] )/ti[i],z[i]);      
+    }
+    return curr<=0;
+}
+ 
+void solve(){
+   cin>>m>>n;
+   for (int i = 0; i < n; ++i)
+   {
+       int a,b,c;cin>>a>>b>>c;
+       ti[i]=a;
+       z[i]=b;
+       y[i]=c;
+   }
+   ll l=-1,r=1e9;
+   while(r-l>1){
+    ll mid=l+(r-l)/2;
+    if(possible(mid)){
+        r=mid;
+    }
+    else{
+        l=mid;
+    }
+   }
+   cout<<r<<endl;
+   int curr=0;
+   for (int i = 0; i < n; ++i)
+   {
+        if(curr>=m){
+            cout<<0<<" ";
+            continue;
+        }
+        int x=r/ (ti[i]*z[i] + y[i] ) * z[i] + min((r% (ti[i]*z[i] + y[i] ))/ti[i],z[i]);
+        if(x>m-curr){
+            cout<<m-curr<<" ";
+            curr+=x;
+            continue;
+        }
+        curr+=x;
+        cout<<x<<" ";
+   }
 }
 
 int main()
 {
     ios_base::sync_with_stdio(false);
-    int t;
-    cin>>t;
+    int t=1;
+//     cin>>t;
     for(ll i=0;i<t;i++){
         solve();
     }
